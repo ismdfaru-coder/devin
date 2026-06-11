@@ -7,7 +7,8 @@ import {
 } from "next/font/google";
 import Link from "next/link";
 import "./globals.css";
-import { site } from "@/lib/site";
+import { site, navLinks, footerLinks } from "@/lib/site";
+import SocialLinks from "@/components/SocialLinks";
 
 const archivo = Archivo({
   variable: "--font-archivo",
@@ -64,12 +65,15 @@ export default function RootLayout({
         <header className="sticky top-0 z-40 bg-black text-white">
           <div className="mx-auto grid max-w-6xl grid-cols-[1fr_auto_1fr] items-center gap-4 px-6 py-3">
             <nav className="flex items-center gap-5 text-[0.7rem] font-bold uppercase tracking-[0.18em]">
-              <Link href="/" className="hover:text-[var(--accent)]">
-                Home
-              </Link>
-              <Link href="/about" className="hover:text-[var(--accent)]">
-                About
-              </Link>
+              {navLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="hover:text-[var(--accent)]"
+                >
+                  {link.label}
+                </Link>
+              ))}
             </nav>
             <Link
               href="/"
@@ -91,22 +95,69 @@ export default function RootLayout({
         <main className="flex-1">{children}</main>
 
         <footer className="mt-16 border-t-4 border-black bg-black text-white">
-          <div className="mx-auto flex max-w-6xl flex-col items-center gap-3 px-6 py-12 text-center">
-            <Link
-              href="/"
-              className="font-display text-3xl uppercase tracking-tight"
-            >
-              {site.name}
-            </Link>
-            <p className="text-[0.7rem] font-bold uppercase tracking-[0.2em] text-gray-400">
-              {site.description}
-            </p>
-            <p className="mt-2 text-xs text-gray-500">
-              © {new Date().getFullYear()} {site.author}. All rights reserved. ·{" "}
+          <div className="mx-auto max-w-6xl px-6 py-12">
+            <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+              <div className="lg:col-span-1">
+                <Link
+                  href="/"
+                  className="font-display text-3xl uppercase tracking-tight"
+                >
+                  {site.name}
+                </Link>
+                <p className="mt-3 text-[0.7rem] font-bold uppercase tracking-[0.2em] text-gray-400">
+                  {site.description}
+                </p>
+                <SocialLinks className="mt-5" />
+              </div>
+
+              <div>
+                <h3 className="kicker text-gray-400">Explore</h3>
+                <ul className="mt-4 space-y-2 text-sm text-gray-300">
+                  {footerLinks.explore.map((link) => (
+                    <li key={link.href}>
+                      <Link href={link.href} className="hover:text-white">
+                        {link.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div>
+                <h3 className="kicker text-gray-400">Legal</h3>
+                <ul className="mt-4 space-y-2 text-sm text-gray-300">
+                  {footerLinks.legal.map((link) => (
+                    <li key={link.href}>
+                      <Link href={link.href} className="hover:text-white">
+                        {link.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div>
+                <h3 className="kicker text-gray-400">Newsletter</h3>
+                <p className="mt-4 text-sm text-gray-300">
+                  Get new posts in your inbox.
+                </p>
+                <Link
+                  href="/#subscribe"
+                  className="mt-4 inline-block bg-[var(--accent)] px-4 py-2 text-[0.7rem] font-bold uppercase tracking-[0.15em] text-white hover:opacity-90"
+                >
+                  Subscribe
+                </Link>
+              </div>
+            </div>
+
+            <div className="mt-12 flex flex-col items-center justify-between gap-2 border-t border-white/15 pt-6 text-xs text-gray-500 sm:flex-row">
+              <p>
+                © {new Date().getFullYear()} {site.author}. All rights reserved.
+              </p>
               <Link href="/login" className="hover:text-white">
                 Author login
               </Link>
-            </p>
+            </div>
           </div>
         </footer>
       </body>

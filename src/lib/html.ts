@@ -25,6 +25,15 @@ const ALLOWED_TAGS = [
   "img",
   "hr",
   "span",
+  "div",
+  "iframe",
+];
+
+const ALLOWED_IFRAME_HOSTNAMES = [
+  "www.youtube.com",
+  "youtube.com",
+  "www.youtube-nocookie.com",
+  "youtube-nocookie.com",
 ];
 
 /**
@@ -38,9 +47,22 @@ export function sanitizePostHtml(dirty: string): string {
     allowedAttributes: {
       a: ["href", "target", "rel"],
       img: ["src", "alt", "title", "width", "height", "class"],
+      iframe: [
+        "src",
+        "width",
+        "height",
+        "allow",
+        "allowfullscreen",
+        "frameborder",
+        "title",
+        "class",
+      ],
+      div: ["class", "data-youtube-video"],
       "*": ["class"],
     },
     allowedSchemes: ["http", "https", "mailto"],
+    allowedIframeHostnames: ALLOWED_IFRAME_HOSTNAMES,
+    allowIframeRelativeUrls: false,
     transformTags: {
       a: (tagName, attribs) => ({
         tagName,

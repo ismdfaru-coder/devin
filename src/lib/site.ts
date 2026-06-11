@@ -7,4 +7,31 @@ export const site = {
     /\/$/,
     "",
   ),
+  email: process.env.NEXT_PUBLIC_CONTACT_EMAIL || "",
+  social: {
+    x: process.env.NEXT_PUBLIC_SOCIAL_X || "",
+    facebook: process.env.NEXT_PUBLIC_SOCIAL_FACEBOOK || "",
+    instagram: process.env.NEXT_PUBLIC_SOCIAL_INSTAGRAM || "",
+    youtube: process.env.NEXT_PUBLIC_SOCIAL_YOUTUBE || "",
+    linkedin: process.env.NEXT_PUBLIC_SOCIAL_LINKEDIN || "",
+  },
+};
+
+export const navLinks = [
+  { href: "/", label: "Home" },
+  { href: "/about", label: "About" },
+  { href: "/contact", label: "Contact" },
+];
+
+export const footerLinks = {
+  explore: [
+    { href: "/", label: "Home" },
+    { href: "/about", label: "About" },
+    { href: "/contact", label: "Contact" },
+    { href: "/#subscribe", label: "Newsletter" },
+  ],
+  legal: [
+    { href: "/privacy", label: "Privacy Policy" },
+    { href: "/terms", label: "Terms of Use" },
+  ],
 };

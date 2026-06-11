@@ -5,6 +5,7 @@ import { BubbleMenu } from "@tiptap/react/menus";
 import StarterKit from "@tiptap/starter-kit";
 import Image from "@tiptap/extension-image";
 import Placeholder from "@tiptap/extension-placeholder";
+import Youtube from "@tiptap/extension-youtube";
 
 type Props = {
   initialHTML: string;
@@ -60,6 +61,12 @@ function addImage(editor: Editor) {
   if (url) editor.chain().focus().setImage({ src: url }).run();
 }
 
+function addYoutube(editor: Editor) {
+  const url = window.prompt("YouTube URL");
+  if (!url) return;
+  editor.commands.setYoutubeVideo({ src: url });
+}
+
 export default function RichTextEditor({ initialHTML, onChange }: Props) {
   const editor = useEditor({
     immediatelyRender: false,
@@ -72,6 +79,13 @@ export default function RichTextEditor({ initialHTML, onChange }: Props) {
         },
       }),
       Image.configure({ HTMLAttributes: { class: "rounded-lg" } }),
+      Youtube.configure({
+        nocookie: true,
+        controls: true,
+        width: 640,
+        height: 360,
+        HTMLAttributes: { class: "yt-embed" },
+      }),
       Placeholder.configure({
         placeholder: "Tell your story…",
       }),
@@ -173,6 +187,11 @@ export default function RichTextEditor({ initialHTML, onChange }: Props) {
           title="Add image"
           onClick={() => addImage(editor)}
           label="🖼 Image"
+        />
+        <ToolbarButton
+          title="Embed YouTube video"
+          onClick={() => addYoutube(editor)}
+          label="▶ YouTube"
         />
         <ToolbarButton
           title="Divider"
