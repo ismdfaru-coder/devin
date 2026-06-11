@@ -1,5 +1,13 @@
 import { site } from "@/lib/site";
 
+function escapeHtml(s: string): string {
+  return s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
 type Post = {
   title: string;
   slug: string;
@@ -16,13 +24,13 @@ function postEmailHtml(post: Post, sub: Subscriber): string {
   const unsubUrl = `${site.url}/api/unsubscribe?token=${sub.unsubToken}`;
   return `
   <div style="font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;max-width:560px;margin:0 auto;color:#1a1a1a">
-    <p style="color:#6b7280;font-size:13px;margin:0 0 8px">New post from ${site.name}</p>
-    <h1 style="font-size:24px;line-height:1.3;margin:0 0 12px">${post.title}</h1>
-    <p style="font-size:16px;line-height:1.6;color:#374151;margin:0 0 24px">${post.excerpt || ""}</p>
+    <p style="color:#6b7280;font-size:13px;margin:0 0 8px">New post from ${escapeHtml(site.name)}</p>
+    <h1 style="font-size:24px;line-height:1.3;margin:0 0 12px">${escapeHtml(post.title)}</h1>
+    <p style="font-size:16px;line-height:1.6;color:#374151;margin:0 0 24px">${escapeHtml(post.excerpt || "")}</p>
     <a href="${postUrl}" style="display:inline-block;background:#111827;color:#fff;text-decoration:none;padding:12px 20px;border-radius:8px;font-size:15px">Read the full post</a>
     <hr style="border:none;border-top:1px solid #e5e7eb;margin:32px 0 16px" />
     <p style="font-size:12px;color:#9ca3af;line-height:1.5">
-      You're receiving this because you subscribed to ${site.name}.<br/>
+      You're receiving this because you subscribed to ${escapeHtml(site.name)}.<br/>
       <a href="${unsubUrl}" style="color:#9ca3af">Unsubscribe</a>
     </p>
   </div>`;
@@ -86,7 +94,7 @@ export async function sendWelcomeEmail(sub: Subscriber): Promise<void> {
       html: `
       <div style="font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;max-width:560px;margin:0 auto;color:#1a1a1a">
         <h1 style="font-size:22px;margin:0 0 12px">Thanks for subscribing 🎉</h1>
-        <p style="font-size:16px;line-height:1.6;color:#374151">You'll get an email whenever ${site.author} publishes a new post on ${site.name}.</p>
+        <p style="font-size:16px;line-height:1.6;color:#374151">You'll get an email whenever ${escapeHtml(site.author)} publishes a new post on ${escapeHtml(site.name)}.</p>
         <p style="font-size:12px;color:#9ca3af;margin-top:24px"><a href="${unsubUrl}" style="color:#9ca3af">Unsubscribe</a></p>
       </div>`,
     });

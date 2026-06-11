@@ -4,7 +4,14 @@ const COOKIE_NAME = "blog_session";
 const MAX_AGE = 60 * 60 * 24 * 30; // 30 days
 
 function getSecret(): string {
-  return process.env.AUTH_SECRET || "insecure-dev-secret";
+  const secret = process.env.AUTH_SECRET;
+  if (secret) return secret;
+  if (process.env.NODE_ENV === "production") {
+    throw new Error(
+      "AUTH_SECRET must be set in production to sign session cookies.",
+    );
+  }
+  return "insecure-dev-secret";
 }
 
 function base64url(input: ArrayBuffer | string): string {

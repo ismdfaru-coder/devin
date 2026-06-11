@@ -63,8 +63,9 @@ export async function savePost(formData: FormData): Promise<void> {
       },
     });
 
-    // Notify subscribers only on the first time a post becomes published.
-    if (publish && !wasPublished) {
+    // Notify subscribers only the first time a post is ever published.
+    // publishedAt is preserved across unpublish, so it flags prior publication.
+    if (publish && !wasPublished && !existing.publishedAt) {
       await notifySubscribers(updated);
     }
 
