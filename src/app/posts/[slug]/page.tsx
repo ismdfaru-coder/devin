@@ -14,6 +14,10 @@ import { site } from "@/lib/site";
 
 type Params = { params: Promise<{ slug: string }> };
 
+// Render at request time so newly published posts are immediately reachable
+// and a transient database error during deploy can never fail the build.
+export const dynamic = "force-dynamic";
+
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { slug } = await params;
   const post = await getPostBySlug(slug);

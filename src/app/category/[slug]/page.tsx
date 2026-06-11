@@ -7,6 +7,10 @@ import { site } from "@/lib/site";
 
 type Params = { params: Promise<{ slug: string }> };
 
+// Query categories at request time so published posts show up without a
+// rebuild and a transient database error can never fail the deploy.
+export const dynamic = "force-dynamic";
+
 export function generateStaticParams() {
   return categories.map((c) => ({ slug: c.slug }));
 }

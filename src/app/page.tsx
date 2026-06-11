@@ -5,6 +5,10 @@ import { getPublishedPosts } from "@/lib/posts";
 import { site } from "@/lib/site";
 import { categories } from "@/lib/categories";
 
+// Render at request time so newly published posts appear immediately and a
+// transient database error during deploy can never fail the build.
+export const dynamic = "force-dynamic";
+
 export default async function Home() {
   const posts = await getPublishedPosts();
   const [featured, ...rest] = posts;
