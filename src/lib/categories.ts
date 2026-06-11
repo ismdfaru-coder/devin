@@ -12,7 +12,6 @@ export const categories: Category[] = [
   { slug: "hacks", label: "Hacks" },
   { slug: "ai", label: "AI" },
   { slug: "competitors", label: "Competitors" },
-  { slug: "best", label: "Best" },
 ];
 
 export function categoryBySlug(slug: string): Category | undefined {

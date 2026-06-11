@@ -3,7 +3,11 @@ import { notFound } from "next/navigation";
 import PostBody from "@/components/PostBody";
 import ShareButtons from "@/components/ShareButtons";
 import SubscribeForm from "@/components/SubscribeForm";
-import { getPostBySlug, readingTime } from "@/lib/posts";
+import ReadingProgress from "@/components/ReadingProgress";
+import BackToTop from "@/components/BackToTop";
+import AuthorBio from "@/components/AuthorBio";
+import PostCard from "@/components/PostCard";
+import { getPostBySlug, getRelatedPosts, readingTime } from "@/lib/posts";
 import { formatDate } from "@/lib/format";
 import { htmlToText } from "@/lib/html";
 import { site } from "@/lib/site";
@@ -39,9 +43,12 @@ export default async function PostPage({ params }: Params) {
   if (!post || !post.published) notFound();
 
   const url = `${site.url}/posts/${post.slug}`;
+  const related = await getRelatedPosts(post.slug, post.category);
 
   return (
     <article className="py-12">
+      <ReadingProgress />
+      <BackToTop />
       <header className="mx-auto max-w-3xl px-6 text-center">
         <p className="kicker">
           {formatDate(post.publishedAt ?? post.createdAt)}
@@ -77,6 +84,8 @@ export default async function PostPage({ params }: Params) {
           <ShareButtons url={url} title={post.title} />
         </div>
 
+        <AuthorBio />
+
         <div className="mt-12 border-y-4 border-black bg-black px-8 py-10 text-center text-white">
           <p className="kicker">Newsletter</p>
           <h2 className="mt-2 font-display text-2xl uppercase tracking-tight">
@@ -90,6 +99,21 @@ export default async function PostPage({ params }: Params) {
           </div>
         </div>
       </div>
+
+      {related.length > 0 && (
+        <section className="mx-auto mt-16 max-w-6xl px-6">
+          <div className="border-t-4 border-black pt-3">
+            <h2 className="font-display text-2xl uppercase tracking-tight sm:text-3xl">
+              Keep reading
+            </h2>
+          </div>
+          <div className="grid gap-x-8 gap-y-12 pt-8 sm:grid-cols-2 lg:grid-cols-3">
+            {related.map((p) => (
+              <PostCard key={p.id} post={p} />
+            ))}
+          </div>
+        </section>
+      )}
     </article>
   );
 }

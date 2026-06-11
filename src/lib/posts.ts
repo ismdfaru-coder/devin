@@ -48,3 +48,52 @@ export async function getPublishedPostsByCategory(category: string) {
 export async function getPostBySlug(slug: string) {
   return prisma.post.findUnique({ where: { slug } });
 }
+
+export async function searchPublishedPosts(query: string) {
+  const q = query.trim();
+  if (!q) return [];
+  return prisma.post.findMany({
+    where: {
+      published: true,
+      OR: [
+        { title: { contains: q, mode: "insensitive" } },
+        { excerpt: { contains: q, mode: "insensitive" } },
+        { content: { contains: q, mode: "insensitive" } },
+      ],
+    },
+    orderBy: [{ publishedAt: "desc" }, { createdAt: "desc" }],
+    take: 50,
+  });
+}
+
+export async function getRelatedPosts(
+  slug: string,
+  category: string | null,
+  take = 3,
+) {
+  if (category) {
+    const sameCategory = await prisma.post.findMany({
+      where: { published: true, category, slug: { not: slug } },
+      orderBy: [{ publishedAt: "desc" }, { createdAt: "desc" }],
+      take,
+    });
+    if (sameCategory.length >= take) return sameCategory;
+
+    const fillers = await prisma.post.findMany({
+      where: {
+        published: true,
+        slug: { not: slug },
+        id: { notIn: sameCategory.map((p) => p.id) },
+      },
+      orderBy: [{ publishedAt: "desc" }, { createdAt: "desc" }],
+      take: take - sameCategory.length,
+    });
+    return [...sameCategory, ...fillers];
+  }
+
+  return prisma.post.findMany({
+    where: { published: true, slug: { not: slug } },
+    orderBy: [{ publishedAt: "desc" }, { createdAt: "desc" }],
+    take,
+  });
+}

@@ -58,7 +58,17 @@ export function sanitizePostHtml(dirty: string): string {
         "class",
       ],
       div: ["class", "data-youtube-video"],
+      p: ["class", "style"],
+      h1: ["class", "style"],
+      h2: ["class", "style"],
+      h3: ["class", "style"],
+      h4: ["class", "style"],
       "*": ["class"],
+    },
+    allowedStyles: {
+      "*": {
+        "text-align": [/^(left|right|center|justify)$/],
+      },
     },
     allowedSchemes: ["http", "https", "mailto"],
     allowedIframeHostnames: ALLOWED_IFRAME_HOSTNAMES,

@@ -6,6 +6,7 @@ import StarterKit from "@tiptap/starter-kit";
 import Image from "@tiptap/extension-image";
 import Placeholder from "@tiptap/extension-placeholder";
 import Youtube from "@tiptap/extension-youtube";
+import TextAlign from "@tiptap/extension-text-align";
 
 type Props = {
   initialHTML: string;
@@ -77,6 +78,10 @@ export default function RichTextEditor({ initialHTML, onChange }: Props) {
           openOnClick: false,
           HTMLAttributes: { rel: "noopener noreferrer nofollow" },
         },
+      }),
+      TextAlign.configure({
+        types: ["heading", "paragraph"],
+        alignments: ["left", "center", "right", "justify"],
       }),
       Image.configure({ HTMLAttributes: { class: "rounded-lg" } }),
       Youtube.configure({
@@ -175,6 +180,31 @@ export default function RichTextEditor({ initialHTML, onChange }: Props) {
           active={editor.isActive("codeBlock")}
           onClick={() => editor.chain().focus().toggleCodeBlock().run()}
           label="</> Code"
+        />
+        <span className="mx-1 h-5 w-px bg-border" />
+        <ToolbarButton
+          title="Align left"
+          active={editor.isActive({ textAlign: "left" })}
+          onClick={() => editor.chain().focus().setTextAlign("left").run()}
+          label="⯇"
+        />
+        <ToolbarButton
+          title="Align center"
+          active={editor.isActive({ textAlign: "center" })}
+          onClick={() => editor.chain().focus().setTextAlign("center").run()}
+          label="≡"
+        />
+        <ToolbarButton
+          title="Align right"
+          active={editor.isActive({ textAlign: "right" })}
+          onClick={() => editor.chain().focus().setTextAlign("right").run()}
+          label="⯈"
+        />
+        <ToolbarButton
+          title="Justify"
+          active={editor.isActive({ textAlign: "justify" })}
+          onClick={() => editor.chain().focus().setTextAlign("justify").run()}
+          label="☰ Justify"
         />
         <span className="mx-1 h-5 w-px bg-border" />
         <ToolbarButton

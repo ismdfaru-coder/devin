@@ -39,6 +39,11 @@ export const metadata: Metadata = {
     template: `%s — ${site.name}`,
   },
   description: site.description,
+  alternates: {
+    types: {
+      "application/rss+xml": `${site.url}/rss.xml`,
+    },
+  },
   openGraph: {
     title: site.name,
     description: site.description,
@@ -72,6 +77,23 @@ export default function RootLayout({
               {site.name}
             </Link>
             <div className="flex items-center gap-4">
+              <Link
+                href="/search"
+                aria-label="Search"
+                className="hover:text-[var(--accent)]"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  className="h-5 w-5"
+                >
+                  <circle cx="11" cy="11" r="7" />
+                  <path strokeLinecap="round" d="M21 21l-4.3-4.3" />
+                </svg>
+              </Link>
               <Link
                 href="/about"
                 className="hidden text-[0.7rem] font-bold uppercase tracking-[0.18em] hover:text-[var(--accent)] sm:inline"
@@ -188,9 +210,14 @@ export default function RootLayout({
               <p>
                 © {new Date().getFullYear()} {site.author}. All rights reserved.
               </p>
-              <Link href="/login" className="hover:text-white">
-                Author login
-              </Link>
+              <div className="flex items-center gap-4">
+                <a href="/rss.xml" className="hover:text-white">
+                  RSS
+                </a>
+                <Link href="/login" className="hover:text-white">
+                  Author login
+                </Link>
+              </div>
             </div>
           </div>
         </footer>
