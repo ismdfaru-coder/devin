@@ -73,10 +73,14 @@ export async function isAuthenticated(): Promise<boolean> {
 
 export async function setSessionCookie(): Promise<void> {
   const store = await cookies();
+  // Use SameSite=None + Secure so the session cookie is stored when the app
+  // is rendered inside a cross-site iframe (e.g. the v0 preview). A "lax"
+  // cookie is dropped by the browser in that context, which made it look like
+  // sign-in did nothing.
   store.set(COOKIE_NAME, await createSessionToken(), {
     httpOnly: true,
-    sameSite: "lax",
-    secure: process.env.NODE_ENV === "production",
+    sameSite: "none",
+    secure: true,
     path: "/",
     maxAge: MAX_AGE,
   });
