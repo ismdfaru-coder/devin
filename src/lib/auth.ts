@@ -81,6 +81,10 @@ export async function setSessionCookie(): Promise<void> {
     httpOnly: true,
     sameSite: "none",
     secure: true,
+    // Chrome blocks third-party cookies in cross-site iframes (the v0 preview).
+    // `partitioned` (CHIPS) lets the session cookie be stored per top-level site
+    // so sign-in works inside the embedded preview.
+    partitioned: true,
     path: "/",
     maxAge: MAX_AGE,
   });
