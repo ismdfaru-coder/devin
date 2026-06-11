@@ -33,7 +33,13 @@ export async function POST(request: Request) {
     data: { email: normalized },
   });
 
-  await sendWelcomeEmail(subscriber);
+  const latestPost = await prisma.post.findFirst({
+    where: { published: true },
+    orderBy: { publishedAt: "desc" },
+    select: { title: true, slug: true, excerpt: true },
+  });
+
+  await sendWelcomeEmail(subscriber, latestPost);
 
   return NextResponse.json({ message: "You're subscribed! 🎉" });
 }

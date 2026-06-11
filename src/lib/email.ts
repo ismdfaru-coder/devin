@@ -76,10 +76,27 @@ export async function sendNewPostEmails(
   return { sent, skipped: false };
 }
 
-export async function sendWelcomeEmail(sub: Subscriber): Promise<void> {
+function latestPostBlock(post: Post): string {
+  const postUrl = `${site.url}/posts/${post.slug}`;
+  return `
+    <div style="margin-top:24px;border:1px solid #e5e7eb;border-radius:12px;padding:20px">
+      <p style="color:#6b7280;font-size:13px;margin:0 0 8px">Latest post</p>
+      <h2 style="font-size:20px;line-height:1.3;margin:0 0 8px">${escapeHtml(post.title)}</h2>
+      <p style="font-size:15px;line-height:1.6;color:#374151;margin:0 0 16px">${escapeHtml(post.excerpt || "")}</p>
+      <a href="${postUrl}" style="display:inline-block;background:#111827;color:#fff;text-decoration:none;padding:10px 18px;border-radius:8px;font-size:15px">Read it</a>
+    </div>`;
+}
+
+export async function sendWelcomeEmail(
+  sub: Subscriber,
+  latestPost?: Post | null,
+): Promise<void> {
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {
-    console.log(`[email] (welcome) ${sub.email} subscribed to ${site.name}.`);
+    console.log(
+      `[email] (welcome) ${sub.email} subscribed to ${site.name}.` +
+        (latestPost ? ` Latest post: "${latestPost.title}".` : ""),
+    );
     return;
   }
   const from = process.env.EMAIL_FROM || `${site.name} <onboarding@resend.dev>`;
@@ -94,7 +111,8 @@ export async function sendWelcomeEmail(sub: Subscriber): Promise<void> {
       html: `
       <div style="font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;max-width:560px;margin:0 auto;color:#1a1a1a">
         <h1 style="font-size:22px;margin:0 0 12px">Thanks for subscribing 🎉</h1>
-        <p style="font-size:16px;line-height:1.6;color:#374151">You'll get an email whenever ${escapeHtml(site.author)} publishes a new post on ${escapeHtml(site.name)}.</p>
+        <p style="font-size:16px;line-height:1.6;color:#374151">You'll get an email whenever ${escapeHtml(site.author)} publishes a new post on ${escapeHtml(site.name)}.${latestPost ? " Here's the latest one to get you started:" : ""}</p>
+        ${latestPost ? latestPostBlock(latestPost) : ""}
         <p style="font-size:12px;color:#9ca3af;margin-top:24px"><a href="${unsubUrl}" style="color:#9ca3af">Unsubscribe</a></p>
       </div>`,
     });
