@@ -38,6 +38,13 @@ export async function getPublishedPosts() {
   });
 }
 
+export async function getPublishedPostsByCategory(category: string) {
+  return prisma.post.findMany({
+    where: { published: true, category },
+    orderBy: [{ publishedAt: "desc" }, { createdAt: "desc" }],
+  });
+}
+
 export async function getPostBySlug(slug: string) {
   return prisma.post.findUnique({ where: { slug } });
 }

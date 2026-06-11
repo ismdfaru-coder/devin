@@ -1,11 +1,21 @@
+import Link from "next/link";
 import PostCard from "@/components/PostCard";
 import SubscribeForm from "@/components/SubscribeForm";
 import { getPublishedPosts } from "@/lib/posts";
 import { site } from "@/lib/site";
+import { categories } from "@/lib/categories";
 
 export default async function Home() {
   const posts = await getPublishedPosts();
   const [featured, ...rest] = posts;
+  const latest = rest.slice(0, 6);
+
+  const byCategory = categories
+    .map((c) => ({
+      ...c,
+      items: posts.filter((p) => p.category === c.slug).slice(0, 3),
+    }))
+    .filter((c) => c.items.length > 0);
 
   return (
     <div className="mx-auto max-w-6xl px-6">
@@ -25,13 +35,27 @@ export default async function Home() {
             <PostCard post={featured} featured />
           </section>
 
-          {rest.length > 0 && (
-            <section className="grid gap-x-8 gap-y-12 pb-12 sm:grid-cols-2 lg:grid-cols-3">
-              {rest.map((post) => (
-                <PostCard key={post.id} post={post} />
-              ))}
+          {latest.length > 0 && (
+            <section className="pb-12">
+              <SectionHeader title="Latest" />
+              <div className="grid gap-x-8 gap-y-12 pt-8 sm:grid-cols-2 lg:grid-cols-3">
+                {latest.map((post) => (
+                  <PostCard key={post.id} post={post} />
+                ))}
+              </div>
             </section>
           )}
+
+          {byCategory.map((c) => (
+            <section key={c.slug} className="pb-12">
+              <SectionHeader title={c.label} href={`/category/${c.slug}`} />
+              <div className="grid gap-x-8 gap-y-12 pt-8 sm:grid-cols-2 lg:grid-cols-3">
+                {c.items.map((post) => (
+                  <PostCard key={post.id} post={post} />
+                ))}
+              </div>
+            </section>
+          ))}
         </>
       )}
 
@@ -51,6 +75,24 @@ export default async function Home() {
           <SubscribeForm />
         </div>
       </section>
+    </div>
+  );
+}
+
+function SectionHeader({ title, href }: { title: string; href?: string }) {
+  return (
+    <div className="flex items-end justify-between border-t-4 border-black pt-3">
+      <h2 className="font-display text-2xl uppercase tracking-tight sm:text-3xl">
+        {title}
+      </h2>
+      {href && (
+        <Link
+          href={href}
+          className="text-[0.7rem] font-bold uppercase tracking-[0.15em] text-[var(--accent)] hover:underline"
+        >
+          View all
+        </Link>
+      )}
     </div>
   );
 }

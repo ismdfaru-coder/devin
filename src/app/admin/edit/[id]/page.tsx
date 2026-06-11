@@ -19,6 +19,7 @@ export default async function EditPostPage({ params }: Params) {
           content: post.content,
           excerpt: post.excerpt,
           coverImage: post.coverImage,
+          category: post.category,
           published: post.published,
         }}
       />

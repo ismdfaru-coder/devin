@@ -27,6 +27,7 @@ export async function savePost(formData: FormData): Promise<void> {
   const content = (formData.get("content") as string) || "";
   const excerptInput = (formData.get("excerpt") as string) || "";
   const coverImage = ((formData.get("coverImage") as string) || "").trim();
+  const category = ((formData.get("category") as string) || "").trim();
   const intent = (formData.get("intent") as string) || "draft"; // "publish" | "draft"
 
   if (!title) {
@@ -51,6 +52,7 @@ export async function savePost(formData: FormData): Promise<void> {
         content,
         excerpt,
         coverImage: coverImage || null,
+        category: category || null,
         published: publish,
         publishedAt: publish
           ? (existing.publishedAt ?? new Date())
@@ -66,6 +68,10 @@ export async function savePost(formData: FormData): Promise<void> {
 
     revalidatePath("/");
     revalidatePath(`/posts/${updated.slug}`);
+    if (updated.category) revalidatePath(`/category/${updated.category}`);
+    if (existing.category && existing.category !== updated.category) {
+      revalidatePath(`/category/${existing.category}`);
+    }
     revalidatePath("/admin");
   } else {
     const slug = await uniqueSlug(title);
@@ -76,6 +82,7 @@ export async function savePost(formData: FormData): Promise<void> {
         content,
         excerpt,
         coverImage: coverImage || null,
+        category: category || null,
         published: publish,
         publishedAt: publish ? new Date() : null,
       },
@@ -86,6 +93,7 @@ export async function savePost(formData: FormData): Promise<void> {
     }
 
     revalidatePath("/");
+    if (created.category) revalidatePath(`/category/${created.category}`);
     revalidatePath("/admin");
   }
 

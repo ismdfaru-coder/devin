@@ -3,6 +3,7 @@
 import { useState } from "react";
 import RichTextEditor from "@/components/RichTextEditor";
 import { savePost } from "@/app/admin/actions";
+import { categories } from "@/lib/categories";
 
 type Props = {
   post?: {
@@ -11,6 +12,7 @@ type Props = {
     content: string;
     excerpt: string;
     coverImage: string | null;
+    category: string | null;
     published: boolean;
   };
 };
@@ -20,6 +22,7 @@ export default function PostEditor({ post }: Props) {
   const [content, setContent] = useState(post?.content ?? "");
   const [excerpt, setExcerpt] = useState(post?.excerpt ?? "");
   const [coverImage, setCoverImage] = useState(post?.coverImage ?? "");
+  const [category, setCategory] = useState(post?.category ?? "");
 
   return (
     <form action={savePost} className="flex flex-col gap-5">
@@ -41,6 +44,23 @@ export default function PostEditor({ post }: Props) {
         placeholder="Cover image URL (optional)"
         className="w-full rounded-lg border border-border px-4 py-2 text-sm outline-none focus:border-[var(--accent)]"
       />
+
+      <div>
+        <label className="mb-1 block text-sm font-medium">Category</label>
+        <select
+          name="category"
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+          className="w-full rounded-lg border border-border px-4 py-2 text-sm outline-none focus:border-[var(--accent)]"
+        >
+          <option value="">Uncategorized</option>
+          {categories.map((c) => (
+            <option key={c.slug} value={c.slug}>
+              {c.label}
+            </option>
+          ))}
+        </select>
+      </div>
 
       <div>
         <RichTextEditor initialHTML={content} onChange={setContent} />

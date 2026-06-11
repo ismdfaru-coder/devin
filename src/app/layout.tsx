@@ -7,8 +7,9 @@ import {
 } from "next/font/google";
 import Link from "next/link";
 import "./globals.css";
-import { site, navLinks, footerLinks } from "@/lib/site";
+import { site, footerLinks } from "@/lib/site";
 import SocialLinks from "@/components/SocialLinks";
+import { categories } from "@/lib/categories";
 
 const archivo = Archivo({
   variable: "--font-archivo",
@@ -63,25 +64,26 @@ export default function RootLayout({
     >
       <body className="flex min-h-full flex-col">
         <header className="sticky top-0 z-40 bg-black text-white">
-          <div className="mx-auto grid max-w-6xl grid-cols-[1fr_auto_1fr] items-center gap-4 px-6 py-3">
-            <nav className="flex items-center gap-5 text-[0.7rem] font-bold uppercase tracking-[0.18em]">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="hover:text-[var(--accent)]"
-                >
-                  {link.label}
-                </Link>
-              ))}
-            </nav>
+          <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-3">
             <Link
               href="/"
-              className="text-center font-display text-2xl uppercase leading-none tracking-tight sm:text-3xl"
+              className="font-display text-2xl uppercase leading-none tracking-tight sm:text-3xl"
             >
               {site.name}
             </Link>
-            <div className="flex justify-end">
+            <div className="flex items-center gap-4">
+              <Link
+                href="/about"
+                className="hidden text-[0.7rem] font-bold uppercase tracking-[0.18em] hover:text-[var(--accent)] sm:inline"
+              >
+                About
+              </Link>
+              <Link
+                href="/contact"
+                className="hidden text-[0.7rem] font-bold uppercase tracking-[0.18em] hover:text-[var(--accent)] sm:inline"
+              >
+                Contact
+              </Link>
               <Link
                 href="/#subscribe"
                 className="bg-[var(--accent)] px-4 py-2 text-[0.7rem] font-bold uppercase tracking-[0.15em] text-white hover:opacity-90"
@@ -90,13 +92,29 @@ export default function RootLayout({
               </Link>
             </div>
           </div>
+          <nav className="border-t border-white/15">
+            <div className="mx-auto flex max-w-6xl items-center gap-5 overflow-x-auto px-6 py-2.5 text-[0.72rem] font-bold uppercase tracking-[0.14em] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+              <Link href="/" className="shrink-0 hover:text-[var(--accent)]">
+                Latest
+              </Link>
+              {categories.map((c) => (
+                <Link
+                  key={c.slug}
+                  href={`/category/${c.slug}`}
+                  className="shrink-0 whitespace-nowrap text-gray-300 hover:text-[var(--accent)]"
+                >
+                  {c.label}
+                </Link>
+              ))}
+            </div>
+          </nav>
         </header>
 
         <main className="flex-1">{children}</main>
 
         <footer className="mt-16 border-t-4 border-black bg-black text-white">
           <div className="mx-auto max-w-6xl px-6 py-12">
-            <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-5">
               <div className="lg:col-span-1">
                 <Link
                   href="/"
@@ -108,6 +126,22 @@ export default function RootLayout({
                   {site.description}
                 </p>
                 <SocialLinks className="mt-5" />
+              </div>
+
+              <div>
+                <h3 className="kicker text-gray-400">Sections</h3>
+                <ul className="mt-4 space-y-2 text-sm text-gray-300">
+                  {categories.map((c) => (
+                    <li key={c.slug}>
+                      <Link
+                        href={`/category/${c.slug}`}
+                        className="hover:text-white"
+                      >
+                        {c.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
               </div>
 
               <div>
