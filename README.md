@@ -26,7 +26,7 @@ Built with Next.js (App Router) + TypeScript + Tailwind CSS + Prisma.
 | Framework      | Next.js 16 (App Router, Server Actions) |
 | Language       | TypeScript                              |
 | Styling        | Tailwind CSS v4                         |
-| Database / ORM | SQLite + Prisma (swap to Postgres easily) |
+| Database / ORM | PostgreSQL + Prisma                      |
 | Email          | [Resend](https://resend.com) (optional) |
 | Auth           | Signed session cookie (single admin)    |
 
@@ -36,18 +36,22 @@ Built with Next.js (App Router) + TypeScript + Tailwind CSS + Prisma.
 # 1. Install dependencies
 npm install
 
-# 2. Configure environment (copy and edit)
+# 2. Start Postgres (local dev via Docker), or use a hosted Postgres
+docker run -d -e POSTGRES_PASSWORD=devpass -e POSTGRES_DB=blog -p 5432:5432 postgres:16
+
+# 3. Configure environment (copy and edit)
 cp .env.example .env
+#   - set DATABASE_URL (Postgres connection string)
 #   - set ADMIN_PASSWORD (your login password)
 #   - set AUTH_SECRET (a long random string)
 #   - set NEXT_PUBLIC_SITE_NAME / AUTHOR_NAME / SITE_URL for branding
 #   - (optional) set RESEND_API_KEY + EMAIL_FROM to actually send emails
 
-# 3. Create the database
+# 4. Create the database schema
 npm run db:migrate      # applies migrations
 npm run db:seed         # optional: adds sample posts
 
-# 4. Run it
+# 5. Run it
 npm run dev             # http://localhost:3000
 ```
 
@@ -58,7 +62,7 @@ Log in to write posts at **/login** using `ADMIN_PASSWORD`, then go to
 
 See `.env.example`. Key ones:
 
-- `DATABASE_URL` — database connection (SQLite by default).
+- `DATABASE_URL` — PostgreSQL connection string.
 - `ADMIN_PASSWORD` — the password you log in with. For production prefer
   `ADMIN_PASSWORD_HASH` (a bcrypt hash) and leave `ADMIN_PASSWORD` unset.
 - `AUTH_SECRET` — secret used to sign the session cookie. Use a long random
@@ -80,10 +84,9 @@ domain in Resend and set `EMAIL_FROM` accordingly (the default
 
 This deploys well on any Node host (Vercel, Railway, Render, Fly, a VPS, etc.).
 
-- For SQLite you need a persistent disk; on serverless platforms like Vercel,
-  switch `datasource db { provider = "postgresql" }` in `prisma/schema.prisma`
-  and point `DATABASE_URL` at a hosted Postgres (e.g. Neon, Supabase).
-- Run `npm run db:deploy` to apply migrations in production.
+- Point `DATABASE_URL` at a hosted Postgres (e.g. Neon, Supabase, Vercel Postgres).
+- On Vercel the `vercel-build` script runs `prisma migrate deploy` automatically;
+  on other hosts run `npm run db:deploy` to apply migrations.
 - Set all environment variables in your host's dashboard.
 
 ## Scripts
