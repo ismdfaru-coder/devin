@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import Markdown from "@/components/Markdown";
+import PostBody from "@/components/PostBody";
 import ShareButtons from "@/components/ShareButtons";
 import SubscribeForm from "@/components/SubscribeForm";
 import { getPostBySlug, readingTime } from "@/lib/posts";
 import { formatDate } from "@/lib/format";
+import { htmlToText } from "@/lib/html";
 import { site } from "@/lib/site";
 
 type Params = { params: Promise<{ slug: string }> };
@@ -49,7 +50,7 @@ export default async function PostPage({ params }: Params) {
         <span>·</span>
         <span>{formatDate(post.publishedAt ?? post.createdAt)}</span>
         <span>·</span>
-        <span>{readingTime(post.content)} min read</span>
+        <span>{readingTime(htmlToText(post.content))} min read</span>
       </div>
 
       {post.coverImage && (
@@ -62,7 +63,7 @@ export default async function PostPage({ params }: Params) {
       )}
 
       <div className="mt-8">
-        <Markdown>{post.content}</Markdown>
+        <PostBody html={post.content} />
       </div>
 
       <div className="mt-12 border-t border-border pt-6">

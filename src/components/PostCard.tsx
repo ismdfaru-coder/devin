@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { formatDate } from "@/lib/format";
 import { readingTime } from "@/lib/posts";
+import { htmlToText } from "@/lib/html";
 
 type Props = {
   post: {
@@ -36,7 +37,7 @@ export default function PostCard({ post }: Props) {
         )}
         <p className="text-sm text-muted">
           {formatDate(post.publishedAt ?? post.createdAt)} ·{" "}
-          {readingTime(post.content)} min read
+          {readingTime(htmlToText(post.content))} min read
         </p>
       </Link>
     </article>

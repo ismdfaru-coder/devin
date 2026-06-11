@@ -1,8 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
+import RichTextEditor from "@/components/RichTextEditor";
 import { savePost } from "@/app/admin/actions";
 
 type Props = {
@@ -21,7 +20,6 @@ export default function PostEditor({ post }: Props) {
   const [content, setContent] = useState(post?.content ?? "");
   const [excerpt, setExcerpt] = useState(post?.excerpt ?? "");
   const [coverImage, setCoverImage] = useState(post?.coverImage ?? "");
-  const [tab, setTab] = useState<"write" | "preview">("write");
 
   return (
     <form action={savePost} className="flex flex-col gap-5">
@@ -45,55 +43,8 @@ export default function PostEditor({ post }: Props) {
       />
 
       <div>
-        <div className="mb-2 flex gap-1 border-b border-border">
-          <button
-            type="button"
-            onClick={() => setTab("write")}
-            className={`px-4 py-2 text-sm font-medium ${
-              tab === "write"
-                ? "border-b-2 border-[var(--accent)]"
-                : "text-muted"
-            }`}
-          >
-            Write
-          </button>
-          <button
-            type="button"
-            onClick={() => setTab("preview")}
-            className={`px-4 py-2 text-sm font-medium ${
-              tab === "preview"
-                ? "border-b-2 border-[var(--accent)]"
-                : "text-muted"
-            }`}
-          >
-            Preview
-          </button>
-        </div>
-
-        {tab === "write" ? (
-          <textarea
-            name="content"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            placeholder="Write your post in Markdown…"
-            rows={20}
-            className="w-full rounded-lg border border-border p-4 font-mono text-sm leading-relaxed outline-none focus:border-[var(--accent)]"
-          />
-        ) : (
-          <div className="min-h-[20rem] rounded-lg border border-border p-4">
-            {content.trim() ? (
-              <div className="prose">
-                <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                  {content}
-                </ReactMarkdown>
-              </div>
-            ) : (
-              <p className="text-muted">Nothing to preview yet.</p>
-            )}
-            {/* keep content in the form when previewing */}
-            <input type="hidden" name="content" value={content} />
-          </div>
-        )}
+        <RichTextEditor initialHTML={content} onChange={setContent} />
+        <input type="hidden" name="content" value={content} />
       </div>
 
       <div>

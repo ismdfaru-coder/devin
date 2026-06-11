@@ -17,21 +17,13 @@ const posts = [
     title: "Welcome to my blog",
     excerpt:
       "This is my personal corner of the internet — here's what you can expect to find.",
-    content: `Welcome! 👋
-
-This is my **personal blog**, where I share thoughts, stories, and ideas. It's a single-author publication — every post here is written by me.
-
-## What to expect
-
-- Long-form essays on topics I care about
-- Short notes and updates
-- The occasional tutorial
-
-## Stay in the loop
-
-If you enjoy what you read, **subscribe** with your email and you'll get new posts delivered straight to your inbox. You can also share any post on social media using the buttons at the bottom of each article.
-
-Thanks for stopping by!`,
+    content: `<p>Welcome! 👋</p>
+<p>This is my <strong>personal blog</strong>, where I share thoughts, stories, and ideas. It's a single-author publication — every post here is written by me.</p>
+<h2>What to expect</h2>
+<ul><li>Long-form essays on topics I care about</li><li>Short notes and updates</li><li>The occasional tutorial</li></ul>
+<h2>Stay in the loop</h2>
+<p>If you enjoy what you read, <strong>subscribe</strong> with your email and you'll get new posts delivered straight to your inbox. You can also share any post on social media using the buttons at the bottom of each article.</p>
+<p>Thanks for stopping by!</p>`,
     published: true,
     daysAgo: 2,
   },
@@ -39,24 +31,18 @@ Thanks for stopping by!`,
     title: "Why I started writing",
     excerpt:
       "A few reasons I decided to put my thoughts into words and publish them.",
-    content: `I've always believed that **writing is thinking**. When I try to explain an idea clearly, I discover the gaps in my own understanding.
-
-> The palest ink is better than the best memory.
-
-Here are three reasons I started this blog:
-
-1. To clarify my own thinking
-2. To document what I learn
-3. To connect with people who care about the same things
-
-If any of that resonates with you, I'd love for you to follow along.`,
+    content: `<p>I've always believed that <strong>writing is thinking</strong>. When I try to explain an idea clearly, I discover the gaps in my own understanding.</p>
+<blockquote><p>The palest ink is better than the best memory.</p></blockquote>
+<p>Here are three reasons I started this blog:</p>
+<ol><li>To clarify my own thinking</li><li>To document what I learn</li><li>To connect with people who care about the same things</li></ol>
+<p>If any of that resonates with you, I'd love for you to follow along.</p>`,
     published: true,
     daysAgo: 1,
   },
   {
     title: "A draft I'm still working on",
     excerpt: "This one isn't ready yet — only I can see it.",
-    content: `This is a draft. It won't appear on the public site until I publish it.`,
+    content: `<p>This is a draft. It won't appear on the public site until I publish it.</p>`,
     published: false,
     daysAgo: 0,
   },

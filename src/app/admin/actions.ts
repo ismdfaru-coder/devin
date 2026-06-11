@@ -6,6 +6,7 @@ import { prisma } from "@/lib/prisma";
 import { isAuthenticated } from "@/lib/auth";
 import { uniqueSlug } from "@/lib/posts";
 import { sendNewPostEmails } from "@/lib/email";
+import { htmlToText } from "@/lib/html";
 
 async function requireAuth() {
   if (!(await isAuthenticated())) {
@@ -15,13 +16,7 @@ async function requireAuth() {
 
 function excerptFrom(content: string, provided: string): string {
   if (provided.trim()) return provided.trim().slice(0, 280);
-  const plain = content
-    .replace(/[#>*_`~\-]/g, "")
-    .replace(/\!\[.*?\]\(.*?\)/g, "")
-    .replace(/\[(.*?)\]\(.*?\)/g, "$1")
-    .replace(/\s+/g, " ")
-    .trim();
-  return plain.slice(0, 200);
+  return htmlToText(content).slice(0, 200);
 }
 
 export async function savePost(formData: FormData): Promise<void> {
