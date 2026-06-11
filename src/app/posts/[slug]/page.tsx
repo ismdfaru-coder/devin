@@ -41,42 +41,53 @@ export default async function PostPage({ params }: Params) {
   const url = `${site.url}/posts/${post.slug}`;
 
   return (
-    <article className="mx-auto max-w-2xl px-5 py-12">
-      <h1 className="text-4xl font-extrabold leading-tight tracking-tight">
-        {post.title}
-      </h1>
-      <div className="mt-4 flex items-center gap-2 text-sm text-muted">
-        <span>{site.author}</span>
-        <span>·</span>
-        <span>{formatDate(post.publishedAt ?? post.createdAt)}</span>
-        <span>·</span>
-        <span>{readingTime(htmlToText(post.content))} min read</span>
-      </div>
+    <article className="py-12">
+      <header className="mx-auto max-w-3xl px-6 text-center">
+        <p className="kicker">
+          {formatDate(post.publishedAt ?? post.createdAt)}
+        </p>
+        <h1 className="mt-3 font-display text-4xl uppercase leading-[1.05] tracking-tight sm:text-5xl">
+          {post.title}
+        </h1>
+        {post.excerpt && (
+          <p className="mx-auto mt-5 max-w-2xl font-serif text-xl leading-relaxed text-muted">
+            {post.excerpt}
+          </p>
+        )}
+        <div className="mt-6 flex items-center justify-center gap-2 text-[0.7rem] font-bold uppercase tracking-[0.14em] text-muted">
+          <span>By {site.author}</span>
+          <span>·</span>
+          <span>{readingTime(htmlToText(post.content))} min read</span>
+        </div>
+      </header>
 
       {post.coverImage && (
         // eslint-disable-next-line @next/next/no-img-element
         <img
           src={post.coverImage}
           alt={post.title}
-          className="my-8 aspect-[2/1] w-full rounded-xl object-cover"
+          className="mx-auto my-10 aspect-[2/1] w-full max-w-5xl object-cover"
         />
       )}
 
-      <div className="mt-8">
+      <div className="mx-auto mt-8 max-w-2xl px-6">
         <PostBody html={post.content} />
-      </div>
 
-      <div className="mt-12 border-t border-border pt-6">
-        <ShareButtons url={url} title={post.title} />
-      </div>
+        <div className="mt-12 border-t border-border pt-6">
+          <ShareButtons url={url} title={post.title} />
+        </div>
 
-      <div className="mt-12 rounded-2xl bg-gray-50 p-8 text-center">
-        <h2 className="text-xl font-bold">Enjoyed this post?</h2>
-        <p className="mx-auto mt-2 max-w-md text-gray-600">
-          Subscribe to get new posts from {site.author} by email.
-        </p>
-        <div className="mx-auto mt-6 max-w-md">
-          <SubscribeForm />
+        <div className="mt-12 border-y-4 border-black bg-black px-8 py-10 text-center text-white">
+          <p className="kicker">Newsletter</p>
+          <h2 className="mt-2 font-display text-2xl uppercase tracking-tight">
+            Enjoyed this post?
+          </h2>
+          <p className="mx-auto mt-2 max-w-md text-gray-300">
+            Subscribe to get new posts from {site.author} by email.
+          </p>
+          <div className="mx-auto mt-6 max-w-md">
+            <SubscribeForm />
+          </div>
         </div>
       </div>
     </article>

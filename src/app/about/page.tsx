@@ -9,12 +9,16 @@ export const metadata: Metadata = {
 
 export default function AboutPage() {
   return (
-    <div className="mx-auto max-w-2xl px-5 py-12">
-      <h1 className="text-4xl font-extrabold tracking-tight">About</h1>
+    <div className="mx-auto max-w-2xl px-6 py-12">
+      <p className="kicker">About</p>
+      <h1 className="mt-3 font-display text-4xl uppercase tracking-tight sm:text-5xl">
+        {site.name}
+      </h1>
       <div className="prose mt-8">
         <p>
-          Hi, I&apos;m {site.author}. Welcome to {site.name} — my personal space
-          to share thoughts, stories, and ideas.
+          Hi, I&apos;m {site.author}. Welcome to {site.name} — my corner of the
+          web to read, learn, and change. I write about the things I&apos;m
+          thinking through, building, and learning.
         </p>
         <p>
           This is a single-author publication: every post here is written by me.
@@ -23,9 +27,12 @@ export default function AboutPage() {
         </p>
       </div>
 
-      <div className="mt-12 rounded-2xl bg-gray-50 p-8 text-center">
-        <h2 className="text-xl font-bold">Subscribe</h2>
-        <p className="mx-auto mt-2 max-w-md text-gray-600">
+      <div className="mt-12 border-y-4 border-black bg-black px-8 py-10 text-center text-white">
+        <p className="kicker">Newsletter</p>
+        <h2 className="mt-2 font-display text-2xl uppercase tracking-tight">
+          Subscribe
+        </h2>
+        <p className="mx-auto mt-2 max-w-md text-gray-300">
           Never miss a post.
         </p>
         <div className="mx-auto mt-6 max-w-md">

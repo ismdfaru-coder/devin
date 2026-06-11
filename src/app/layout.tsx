@@ -1,11 +1,27 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import {
+  Archivo,
+  Archivo_Black,
+  Source_Serif_4,
+  Geist_Mono,
+} from "next/font/google";
 import Link from "next/link";
 import "./globals.css";
 import { site } from "@/lib/site";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const archivo = Archivo({
+  variable: "--font-archivo",
+  subsets: ["latin"],
+});
+
+const archivoBlack = Archivo_Black({
+  variable: "--font-archivo-black",
+  weight: "400",
+  subsets: ["latin"],
+});
+
+const sourceSerif = Source_Serif_4({
+  variable: "--font-source-serif",
   subsets: ["latin"],
 });
 
@@ -42,41 +58,52 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${archivo.variable} ${archivoBlack.variable} ${sourceSerif.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
-        <header className="border-b border-border">
-          <div className="mx-auto flex max-w-3xl items-center justify-between px-5 py-5">
-            <Link href="/" className="text-xl font-bold tracking-tight">
-              {site.name}
-            </Link>
-            <nav className="flex items-center gap-5 text-sm text-muted">
-              <Link href="/" className="hover:text-foreground">
+      <body className="flex min-h-full flex-col">
+        <header className="sticky top-0 z-40 bg-black text-white">
+          <div className="mx-auto grid max-w-6xl grid-cols-[1fr_auto_1fr] items-center gap-4 px-6 py-3">
+            <nav className="flex items-center gap-5 text-[0.7rem] font-bold uppercase tracking-[0.18em]">
+              <Link href="/" className="hover:text-[var(--accent)]">
                 Home
               </Link>
-              <Link href="/about" className="hover:text-foreground">
+              <Link href="/about" className="hover:text-[var(--accent)]">
                 About
               </Link>
+            </nav>
+            <Link
+              href="/"
+              className="text-center font-display text-2xl uppercase leading-none tracking-tight sm:text-3xl"
+            >
+              {site.name}
+            </Link>
+            <div className="flex justify-end">
               <Link
                 href="/#subscribe"
-                className="rounded-full bg-[var(--accent)] px-4 py-1.5 font-medium text-white hover:opacity-90"
+                className="bg-[var(--accent)] px-4 py-2 text-[0.7rem] font-bold uppercase tracking-[0.15em] text-white hover:opacity-90"
               >
                 Subscribe
               </Link>
-            </nav>
+            </div>
           </div>
         </header>
 
         <main className="flex-1">{children}</main>
 
-        <footer className="border-t border-border">
-          <div className="mx-auto flex max-w-3xl flex-col items-center gap-2 px-5 py-8 text-center text-sm text-muted">
-            <p>
-              © {new Date().getFullYear()} {site.author}. All rights reserved.
+        <footer className="mt-16 border-t-4 border-black bg-black text-white">
+          <div className="mx-auto flex max-w-6xl flex-col items-center gap-3 px-6 py-12 text-center">
+            <Link
+              href="/"
+              className="font-display text-3xl uppercase tracking-tight"
+            >
+              {site.name}
+            </Link>
+            <p className="text-[0.7rem] font-bold uppercase tracking-[0.2em] text-gray-400">
+              {site.description}
             </p>
-            <p>
-              Built with Next.js ·{" "}
-              <Link href="/login" className="hover:text-foreground">
+            <p className="mt-2 text-xs text-gray-500">
+              © {new Date().getFullYear()} {site.author}. All rights reserved. ·{" "}
+              <Link href="/login" className="hover:text-white">
                 Author login
               </Link>
             </p>

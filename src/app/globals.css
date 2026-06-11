@@ -2,10 +2,10 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #1a1a1a;
-  --muted: #6b7280;
-  --border: #e5e7eb;
-  --accent: #111827;
+  --foreground: #111111;
+  --muted: #5b5b5b;
+  --border: #e3e3e3;
+  --accent: #d6111b;
 }
 
 @theme inline {
@@ -13,23 +13,45 @@
   --color-foreground: var(--foreground);
   --color-muted: var(--muted);
   --color-border: var(--border);
-  --font-sans: var(--font-geist-sans);
+  --color-accent: var(--accent);
+  --font-sans: var(--font-archivo);
+  --font-display: var(--font-archivo-black);
+  --font-serif: var(--font-source-serif);
   --font-mono: var(--font-geist-mono);
-  --font-serif: Georgia, Cambria, "Times New Roman", Times, serif;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  font-family: var(--font-archivo), Arial, Helvetica, sans-serif;
 }
 
-/* Article typography (Medium-like) */
+.font-display {
+  font-family: var(--font-archivo-black), Arial, sans-serif;
+}
+
+.kicker {
+  font-family: var(--font-archivo), sans-serif;
+  font-weight: 700;
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Article typography (editorial / magazine) */
 .prose {
-  font-family: var(--font-serif);
-  font-size: 1.25rem;
-  line-height: 1.8;
-  color: #242424;
+  font-family: var(--font-source-serif), Georgia, serif;
+  font-size: 1.2rem;
+  line-height: 1.75;
+  color: #1d1d1d;
 }
 .prose > * + * {
   margin-top: 1.6rem;
@@ -38,10 +60,10 @@ body {
 .prose h2,
 .prose h3,
 .prose h4 {
-  font-family: var(--font-sans), sans-serif;
-  font-weight: 700;
-  line-height: 1.25;
-  letter-spacing: -0.01em;
+  font-family: var(--font-archivo), sans-serif;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
   margin-top: 2.4rem;
 }
 .prose h1 {
@@ -75,10 +97,12 @@ body {
   margin-top: 0.5rem;
 }
 .prose blockquote {
-  border-left: 3px solid var(--accent);
+  border-left: 4px solid var(--accent);
   padding-left: 1.2rem;
   font-style: italic;
-  color: #4b5563;
+  font-size: 1.35rem;
+  line-height: 1.5;
+  color: #333;
 }
 .prose img {
   border-radius: 0.5rem;

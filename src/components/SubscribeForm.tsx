@@ -43,19 +43,19 @@ export default function SubscribeForm() {
         onChange={(e) => setEmail(e.target.value)}
         placeholder="you@example.com"
         aria-label="Email address"
-        className="flex-1 rounded-lg border border-border bg-white px-4 py-3 text-base outline-none focus:border-[var(--accent)]"
+        className="flex-1 border border-border bg-white px-4 py-3 text-base text-black outline-none focus:border-[var(--accent)]"
       />
       <button
         type="submit"
         disabled={status === "loading"}
-        className="rounded-lg bg-[var(--accent)] px-6 py-3 font-medium text-white transition hover:opacity-90 disabled:opacity-60"
+        className="bg-[var(--accent)] px-6 py-3 text-sm font-bold uppercase tracking-[0.12em] text-white transition hover:opacity-90 disabled:opacity-60"
       >
         {status === "loading" ? "Subscribing…" : "Subscribe"}
       </button>
       {message && (
         <p
           className={`w-full text-sm sm:basis-full ${
-            status === "ok" ? "text-green-600" : "text-red-600"
+            status === "ok" ? "text-green-400" : "text-red-400"
           }`}
           role="status"
         >
