@@ -7,12 +7,24 @@ import ReadingProgress from "@/components/ReadingProgress";
 import BackToTop from "@/components/BackToTop";
 import AuthorBio from "@/components/AuthorBio";
 import PostCard from "@/components/PostCard";
-import { getPostBySlug, getRelatedPosts, readingTime } from "@/lib/posts";
+import {
+  getPostBySlug,
+  getRelatedPosts,
+  readingTime,
+  getPublishedPosts,
+} from "@/lib/posts";
 import { formatDate } from "@/lib/format";
 import { htmlToText } from "@/lib/html";
 import { site } from "@/lib/site";
 
 type Params = { params: Promise<{ slug: string }> };
+
+export async function generateStaticParams() {
+  const posts = await getPublishedPosts();
+  return posts.map((post) => ({
+    slug: post.slug,
+  }));
+}
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { slug } = await params;
