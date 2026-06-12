@@ -15,6 +15,7 @@ function slugify(input) {
 const posts = [
   {
     title: "Welcome to my blog",
+    category: "tech",
     excerpt:
       "This is my personal corner of the internet — here's what you can expect to find.",
     content: `<p>Welcome! 👋</p>
@@ -29,6 +30,7 @@ const posts = [
   },
   {
     title: "Why I started writing",
+    category: "ai",
     excerpt:
       "A few reasons I decided to put my thoughts into words and publish them.",
     content: `<p>I've always believed that <strong>writing is thinking</strong>. When I try to explain an idea clearly, I discover the gaps in my own understanding.</p>
@@ -61,6 +63,7 @@ async function main() {
         slug: slugify(p.title),
         excerpt: p.excerpt,
         content: p.content,
+        category: p.category || null,
         published: p.published,
         publishedAt,
       },
