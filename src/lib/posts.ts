@@ -56,9 +56,9 @@ export async function searchPublishedPosts(query: string) {
     where: {
       published: true,
       OR: [
-        { title: { contains: q, mode: "insensitive" } },
-        { excerpt: { contains: q, mode: "insensitive" } },
-        { content: { contains: q, mode: "insensitive" } },
+        { title: { contains: q } },
+        { excerpt: { contains: q } },
+        { content: { contains: q } },
       ],
     },
     orderBy: [{ publishedAt: "desc" }, { createdAt: "desc" }],
