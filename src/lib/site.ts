@@ -3,6 +3,8 @@ export const site = {
   description:
     process.env.NEXT_PUBLIC_SITE_DESCRIPTION || "Read, Learn, Change",
   author: process.env.NEXT_PUBLIC_AUTHOR_NAME || "The Author",
+  authorBio: process.env.NEXT_PUBLIC_AUTHOR_BIO || "Writer, thinker, and explorer of ideas. Sharing insights on technology, life, and everything in between.",
+  authorImage: process.env.NEXT_PUBLIC_AUTHOR_IMAGE || "",
   url: (process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000").replace(
     /\/$/,
     "",

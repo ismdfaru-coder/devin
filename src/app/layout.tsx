@@ -10,6 +10,8 @@ import "./globals.css";
 import { site, footerLinks } from "@/lib/site";
 import SocialLinks from "@/components/SocialLinks";
 import { categories } from "@/lib/categories";
+import ThemeToggle from "@/components/ThemeToggle";
+import MobileMenu from "@/components/MobileMenu";
 
 const archivo = Archivo({
   variable: "--font-archivo",
@@ -70,13 +72,17 @@ export default function RootLayout({
       <body className="flex min-h-full flex-col">
         <header className="sticky top-0 z-40 bg-black text-white">
           <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-3">
-            <Link
-              href="/"
-              className="font-display text-2xl uppercase leading-none tracking-tight sm:text-3xl"
-            >
-              {site.name}
-            </Link>
             <div className="flex items-center gap-4">
+              <MobileMenu />
+              <Link
+                href="/"
+                className="font-display text-2xl uppercase leading-none tracking-tight sm:text-3xl"
+              >
+                {site.name}
+              </Link>
+            </div>
+            <div className="flex items-center gap-4">
+              <ThemeToggle />
               <Link
                 href="/search"
                 aria-label="Search"
@@ -95,18 +101,6 @@ export default function RootLayout({
                 </svg>
               </Link>
               <Link
-                href="/about"
-                className="hidden text-[0.7rem] font-bold uppercase tracking-[0.18em] hover:text-[var(--accent)] sm:inline"
-              >
-                About
-              </Link>
-              <Link
-                href="/contact"
-                className="hidden text-[0.7rem] font-bold uppercase tracking-[0.18em] hover:text-[var(--accent)] sm:inline"
-              >
-                Contact
-              </Link>
-              <Link
                 href="/#subscribe"
                 className="bg-[var(--accent)] px-4 py-2 text-[0.7rem] font-bold uppercase tracking-[0.15em] text-white hover:opacity-90"
               >
@@ -114,7 +108,7 @@ export default function RootLayout({
               </Link>
             </div>
           </div>
-          <nav className="border-t border-white/15">
+          <nav className="border-t border-white/15 hidden lg:block">
             <div className="mx-auto flex max-w-6xl items-center gap-5 overflow-x-auto px-6 py-2.5 text-[0.72rem] font-bold uppercase tracking-[0.14em] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
               <Link href="/" className="shrink-0 hover:text-[var(--accent)]">
                 Latest

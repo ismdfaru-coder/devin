@@ -7,10 +7,16 @@ import ReadingProgress from "@/components/ReadingProgress";
 import BackToTop from "@/components/BackToTop";
 import AuthorBio from "@/components/AuthorBio";
 import PostCard from "@/components/PostCard";
+import TableOfContents from "@/components/TableOfContents";
+import FloatingShareBar from "@/components/FloatingShareBar";
+import Breadcrumbs from "@/components/Breadcrumbs";
+import Ad from "@/components/Ad";
 import { getPostBySlug, getRelatedPosts, readingTime } from "@/lib/posts";
 import { formatDate } from "@/lib/format";
 import { htmlToText } from "@/lib/html";
 import { site } from "@/lib/site";
+import { ads } from "@/lib/ads";
+import { categories } from "@/lib/categories";
 
 type Params = { params: Promise<{ slug: string }> };
 
@@ -44,14 +50,24 @@ export default async function PostPage({ params }: Params) {
 
   const url = `${site.url}/posts/${post.slug}`;
   const related = await getRelatedPosts(post.slug, post.category);
+  const category = categories.find(c => c.slug === post.category);
 
   return (
-    <article className="py-12">
+    <article className="py-8">
       <ReadingProgress />
       <BackToTop />
+      <FloatingShareBar url={url} title={post.title} />
+      
+      <Breadcrumbs
+        items={[
+          { label: category?.label || "Blog", href: category ? `/category/${category.slug}` : "/" },
+          { label: post.title },
+        ]}
+      />
+      
       <header className="mx-auto max-w-3xl px-6 text-center">
         <p className="kicker">
-          {formatDate(post.publishedAt ?? post.createdAt)}
+          {category?.label || "Article"} · {formatDate(post.publishedAt ?? post.createdAt)}
         </p>
         <h1 className="mt-3 font-display text-4xl uppercase leading-[1.05] tracking-tight sm:text-5xl">
           {post.title}
@@ -78,7 +94,10 @@ export default async function PostPage({ params }: Params) {
       )}
 
       <div className="mx-auto mt-8 max-w-2xl px-6">
+        <TableOfContents html={post.content} />
         <PostBody html={post.content} />
+
+        <Ad config={ads.inArticle} type="in-article" className="my-8" />
 
         <div className="mt-12 border-t border-border pt-6">
           <ShareButtons url={url} title={post.title} />
