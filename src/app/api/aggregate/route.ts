@@ -95,10 +95,9 @@ export async function GET() {
       name: feed.name,
       url: feed.url,
       type: feed.type,
-      priority: feed.priority,
     });
     return acc;
-  }, {} as Record<string, Array<{ name: string; url: string; type: string; priority: string }>>);
+  }, {} as Record<string, Array<{ name: string; url: string; type: string }>>);
 
   return NextResponse.json({
     success: true,
