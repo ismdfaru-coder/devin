@@ -4,13 +4,21 @@ export type Category = {
 };
 
 export const categories: Category[] = [
+  // Main categories
   { slug: "tech", label: "Tech" },
+  { slug: "ai", label: "AI" },
+  { slug: "programming", label: "Programming" },
+  { slug: "gadgets", label: "Gadgets" },
+  { slug: "cybersecurity", label: "Cybersecurity" },
+  { slug: "startups", label: "Startups" },
+  { slug: "science", label: "Science" },
+  { slug: "software", label: "Software" },
   { slug: "best-picks", label: "Best Picks" },
+  // Legacy categories
   { slug: "health", label: "Health" },
   { slug: "home-garden", label: "Home & Garden" },
   { slug: "comparisons", label: "Comparisons" },
   { slug: "hacks", label: "Hacks" },
-  { slug: "ai", label: "AI" },
   { slug: "competitors", label: "Competitors" },
 ];
 

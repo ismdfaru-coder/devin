@@ -5,13 +5,12 @@ import { getPublishedPostsByCategory } from "@/lib/posts";
 import { categories, categoryBySlug } from "@/lib/categories";
 import { site } from "@/lib/site";
 
-type Params = { params: Promise<{ slug: string }> };
-
+// Generate static params for all categories
 export function generateStaticParams() {
   return categories.map((c) => ({ slug: c.slug }));
 }
 
-export async function generateMetadata({ params }: Params): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   const category = categoryBySlug(slug);
   if (!category) return { title: "Not found" };
@@ -21,12 +20,12 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   };
 }
 
-export default async function CategoryPage({ params }: Params) {
+export default async function CategoryPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const category = categoryBySlug(slug);
   if (!category) notFound();
 
-  const posts = await getPublishedPostsByCategory(category.slug);
+  const posts = await getPublishedPostsByCategory(slug);
 
   return (
     <div className="mx-auto max-w-6xl px-6">
