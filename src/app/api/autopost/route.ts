@@ -5,7 +5,9 @@ import { prisma } from "@/lib/prisma";
 export async function GET() {
   try {
     // Get or create settings
-    let settings = await prisma.settings.findFirst();
+    let settings = await prisma.settings.findFirst({
+      where: { key: "autopost" },
+    });
     
     if (!settings) {
       settings = await prisma.settings.create({
@@ -13,13 +15,16 @@ export async function GET() {
           key: "autopost",
           value: JSON.stringify({
             enabled: false,
-            schedule: "0 8 * * *", // Daily at 8 AM
-            postsPerDay: 3,
-            categories: ["Tech", "AI", "Best Picks"],
+            schedule: "3x-daily", // 08:00, 13:00, 19:00
+            postsPerRun: 3,
+            maxPostsPerDay: 9,
+            categories: ["Tech", "AI", "Programming", "Gadgets"],
             minArticleLength: 300,
             autoPublish: false,
             ollamaEnabled: false,
-            imageSource: "pixabay", // pixabay, unsplash, pexels
+            imageSource: "unsplash",
+            researchMode: true,
+            logLevel: "info",
           }),
         },
       });
@@ -41,17 +46,32 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { enabled, schedule, postsPerDay, categories, minArticleLength, autoPublish, ollamaEnabled, imageSource } = body;
+    const { 
+      enabled, 
+      schedule, 
+      postsPerRun, 
+      maxPostsPerDay,
+      categories, 
+      minArticleLength, 
+      autoPublish, 
+      ollamaEnabled, 
+      imageSource,
+      researchMode,
+      logLevel,
+    } = body;
 
     const settingsValue = JSON.stringify({
       enabled,
       schedule,
-      postsPerDay,
+      postsPerRun,
+      maxPostsPerDay,
       categories,
       minArticleLength,
       autoPublish,
       ollamaEnabled,
       imageSource,
+      researchMode,
+      logLevel,
     });
 
     // Upsert settings
