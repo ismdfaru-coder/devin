@@ -16,21 +16,38 @@ function validateImageUrl(url: string): boolean {
   return hasValidExtension || hasImageParams;
 }
 
-// Get valid image URL for article
-async function getValidImage(query: string, source: string = "unsplash"): Promise<string> {
-  // Try Unsplash first
-  if (source === "unsplash" || source === "all") {
-    const unsplashUrl = `https://source.unsplash.com/featured/1200x630/?${encodeURIComponent(query)}`;
-    try {
-      const res = await fetch(unsplashUrl, { method: 'HEAD', signal: AbortSignal.timeout(5000) });
-      if (res.ok && validateImageUrl(res.url || unsplashUrl)) {
-        return res.url || unsplashUrl;
-      }
-    } catch {}
-  }
+// Get valid image URL for article - generates unique images based on topic
+async function getValidImage(query: string): Promise<string> {
+  const topic = encodeURIComponent(query.replace(/[^a-zA-Z0-9\s]/g, '').trim());
   
-  // Fallback to a reliable placeholder
-  return `https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200&h=630&fit=crop`;
+  // Generate a unique image seed based on topic hash
+  const topicHash = topic.split('').reduce((a, b) => {
+    return ((a << 5) - a) + b.charCodeAt(0);
+  }, 0);
+  const seed = Math.abs(topicHash % 1000);
+  
+  // Use picsum photos for unique, reliable images
+  const imageId = 100 + (seed % 900); // Use IDs 100-999 for variety
+  const imageUrl = `https://picsum.photos/seed/${topic}/${imageId}/630`;
+  
+  // Validate by doing a quick HEAD request
+  try {
+    const res = await fetch(imageUrl, { method: 'HEAD', signal: AbortSignal.timeout(3000) });
+    if (res.ok) {
+      return imageUrl;
+    }
+  } catch {}
+  
+  // Additional fallback options with topic in URL
+  const fallbacks = [
+    `https://picsum.photos/seed/${topic}/1200/630`,
+    `https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200&h=630&fit=crop&auto=format`, // tech
+    `https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=1200&h=630&fit=crop&auto=format`, // robot/AI
+    `https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1200&h=630&fit=crop&auto=format`, // cybersecurity
+    `https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=1200&h=630&fit=crop&auto=format`, // tech/laptop
+  ];
+  
+  return fallbacks[seed % fallbacks.length];
 }
 
 // AI Article Generator - Creates ORIGINAL articles
