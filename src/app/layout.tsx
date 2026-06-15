@@ -82,19 +82,24 @@ export default function RootLayout({
             </div>
           </div>
           <nav className="border-t border-white/15 hidden lg:block">
-            <div className="mx-auto flex max-w-6xl items-center gap-5 overflow-x-auto px-6 py-2.5 text-[0.72rem] font-bold uppercase tracking-[0.14em] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-              <Link href="/" className="shrink-0 hover:text-[var(--accent)]">
-                Latest
-              </Link>
-              {categories.map((c) => (
-                <Link
-                  key={c.slug}
-                  href={`/category/${c.slug}`}
-                  className="shrink-0 whitespace-nowrap text-gray-300 hover:text-[var(--accent)]"
-                >
-                  {c.label}
+            <div className="relative mx-auto flex max-w-6xl">
+              <div className="flex items-center gap-5 overflow-x-auto px-6 py-2.5 text-[0.72rem] font-bold uppercase tracking-[0.14em] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                <Link href="/" className="shrink-0 hover:text-[var(--accent)]">
+                  Latest
                 </Link>
-              ))}
+                {categories.map((c) => (
+                  <Link
+                    key={c.slug}
+                    href={`/category/${c.slug}`}
+                    className="shrink-0 whitespace-nowrap text-gray-300 hover:text-[var(--accent)]"
+                  >
+                    {c.label}
+                  </Link>
+                ))}
+              </div>
+              {/* Scroll fade indicators */}
+              <div className="pointer-events-none absolute left-0 top-0 h-full w-8 bg-gradient-to-r from-black to-transparent" />
+              <div className="pointer-events-none absolute right-0 top-0 h-full w-8 bg-gradient-to-l from-black to-transparent" />
             </div>
           </nav>
         </header>
