@@ -10,6 +10,7 @@ import PostCard from "@/components/PostCard";
 import TableOfContents from "@/components/TableOfContents";
 import FloatingShareBar from "@/components/FloatingShareBar";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import PostSidebar from "@/components/PostSidebar";
 import Ad from "@/components/Ad";
 import { getPostBySlug, getRelatedPosts, readingTime } from "@/lib/posts";
 import { formatDate } from "@/lib/format";
@@ -93,30 +94,38 @@ export default async function PostPage({ params }: Params) {
         />
       )}
 
-      <div className="mx-auto mt-8 max-w-2xl px-6">
-        <TableOfContents html={post.content} />
-        <PostBody html={post.content} />
+      {/* Main content with sidebar */}
+      <div className="mx-auto flex max-w-7xl gap-8 px-6">
+        <div className="min-w-0 flex-1">
+          <div className="mx-auto max-w-2xl">
+            <TableOfContents html={post.content} />
+            <PostBody html={post.content} />
 
-        <Ad config={ads.inArticle} type="in-article" className="my-8" />
+            <Ad config={ads.inArticle} type="in-article" className="my-8" />
 
-        <div className="mt-12 border-t border-border pt-6">
-          <ShareButtons url={url} title={post.title} />
-        </div>
+            <div className="mt-12 border-t border-border pt-6">
+              <ShareButtons url={url} title={post.title} />
+            </div>
 
-        <AuthorBio />
+            <AuthorBio />
 
-        <div className="mt-12 border-y-4 border-black bg-black px-8 py-10 text-center text-white">
-          <p className="kicker">Newsletter</p>
-          <h2 className="mt-2 font-display text-2xl uppercase tracking-tight">
-            Enjoyed this post?
-          </h2>
-          <p className="mx-auto mt-2 max-w-md text-gray-300">
-            Subscribe to get new posts from {site.author} by email.
-          </p>
-          <div className="mx-auto mt-6 max-w-md">
-            <SubscribeForm />
+            <div className="mt-12 border-y-4 border-black bg-black px-8 py-10 text-center text-white">
+              <p className="kicker">Newsletter</p>
+              <h2 className="mt-2 font-display text-2xl uppercase tracking-tight">
+                Enjoyed this post?
+              </h2>
+              <p className="mx-auto mt-2 max-w-md text-gray-300">
+                Subscribe to get new posts from {site.author} by email.
+              </p>
+              <div className="mx-auto mt-6 max-w-md">
+                <SubscribeForm />
+              </div>
+            </div>
           </div>
         </div>
+
+        {/* Sidebar - Medium/Lifehacker style */}
+        <PostSidebar title={post.title} category={post.category || ""} />
       </div>
 
       {related.length > 0 && (

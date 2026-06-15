@@ -6,6 +6,7 @@ import SocialLinks from "@/components/SocialLinks";
 import { categories } from "@/lib/categories";
 import ThemeToggle from "@/components/ThemeToggle";
 import MobileMenu from "@/components/MobileMenu";
+import AIChatbox from "@/components/AIChatbox";
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -193,6 +194,8 @@ export default function RootLayout({
             </div>
           </div>
         </footer>
+
+        <AIChatbox />
       </body>
     </html>
   );
