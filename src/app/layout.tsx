@@ -1,10 +1,4 @@
 import type { Metadata } from "next";
-import {
-  Archivo,
-  Archivo_Black,
-  Source_Serif_4,
-  Geist_Mono,
-} from "next/font/google";
 import Link from "next/link";
 import "./globals.css";
 import { site, footerLinks } from "@/lib/site";
@@ -12,27 +6,6 @@ import SocialLinks from "@/components/SocialLinks";
 import { categories } from "@/lib/categories";
 import ThemeToggle from "@/components/ThemeToggle";
 import MobileMenu from "@/components/MobileMenu";
-
-const archivo = Archivo({
-  variable: "--font-archivo",
-  subsets: ["latin"],
-});
-
-const archivoBlack = Archivo_Black({
-  variable: "--font-archivo-black",
-  weight: "400",
-  subsets: ["latin"],
-});
-
-const sourceSerif = Source_Serif_4({
-  variable: "--font-source-serif",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -67,7 +40,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${archivo.variable} ${archivoBlack.variable} ${sourceSerif.variable} ${geistMono.variable} h-full antialiased`}
+      className="h-full antialiased"
     >
       <body className="flex min-h-full flex-col">
         <header className="sticky top-0 z-40 bg-black text-white">

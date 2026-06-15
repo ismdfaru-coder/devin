@@ -50,3 +50,6 @@ prisma/dev.db*
 
 # Local Netlify folder
 .netlify
+
+# local Vercel token scratch file
+.vercel-tmp-token
